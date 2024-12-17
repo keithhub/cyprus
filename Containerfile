@@ -9,4 +9,6 @@ RUN dnf config-manager --add-repo https://pkgs.tailscale.com/stable/centos/9/tai
     && dnf clean all \
     && ln -s ../tailscaled.service /usr/lib/systemd/system/multi-user.target.wants/tailscaled.service
 
+COPY sysctl.d /usr/lib/sysctl.d/
+
 RUN bootc container lint
