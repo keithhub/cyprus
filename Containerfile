@@ -1,4 +1,4 @@
-FROM quay.io/centos-bootc/centos-bootc:stream9
+FROM quay.io/centos-bootc/centos-bootc:stream10
 
 # Remove Subscription Manager
 
@@ -16,7 +16,7 @@ RUN set -x; kver=$(cd /usr/lib/modules && echo *); dracut -vf /usr/lib/modules/$
 
 # Install and enable Tailscale
 
-RUN dnf config-manager --add-repo https://pkgs.tailscale.com/stable/centos/9/tailscale.repo \
+RUN dnf config-manager --add-repo https://pkgs.tailscale.com/stable/centos/10/tailscale.repo \
     && dnf install -y tailscale \
     && systemctl enable tailscaled.service
 
