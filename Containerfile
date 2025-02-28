@@ -1,5 +1,7 @@
 FROM quay.io/centos-bootc/centos-bootc:stream9
 
+RUN dnf remove -y subscription-manager
+
 RUN dnf install -y clevis-dracut clevis-luks clevis-systemd && dnf clean all
 
 RUN set -x; kver=$(cd /usr/lib/modules && echo *); dracut -vf /usr/lib/modules/$kver/initramfs.img $kver
