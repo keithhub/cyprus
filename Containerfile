@@ -4,12 +4,16 @@ RUN dnf remove -y subscription-manager
 
 RUN dnf install -y clevis-dracut clevis-luks clevis-systemd
 
-RUN mkdir -p /usr/lib/bootc/kargs.d
-RUN cat <<EOF >> /usr/lib/bootc/kargs.d/99-clevis-pin-tang.toml
+RUN <<EORUN
+set -euxo pipefail
+
+mkdir -p /usr/lib/bootc/kargs.d
+cat <<EOF >> /usr/lib/bootc/kargs.d/99-clevis-pin-tang.toml
 kargs = ["rd.neednet=1"]
 EOF
 
-RUN set -x; kver=$(cd /usr/lib/modules && echo *); dracut -vf /usr/lib/modules/$kver/initramfs.img $kver
+set -x; kver=$(cd /usr/lib/modules && echo *); dracut -vf /usr/lib/modules/$kver/initramfs.img $kver
+EORUN
 
 RUN dnf config-manager --add-repo https://pkgs.tailscale.com/stable/centos/9/tailscale.repo \
     && dnf install -y tailscale \
