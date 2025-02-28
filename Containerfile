@@ -3,6 +3,7 @@ FROM quay.io/centos-bootc/centos-bootc:stream9
 # Remove Subscription Manager
 
 RUN dnf remove -y subscription-manager
+RUN systemctl disable bootc-publish-rhsm-facts.service
 
 # Install and enable Clevis
 
