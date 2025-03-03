@@ -1,9 +1,6 @@
-FROM quay.io/centos-bootc/centos-bootc:stream10
+FROM quay.io/fedora/fedora-bootc:41
 
-# Remove Subscription Manager
-
-RUN dnf remove -y subscription-manager
-RUN systemctl disable bootc-publish-rhsm-facts.service
+RUN dnf makecache
 
 # Install and enable Clevis
 
@@ -15,8 +12,7 @@ RUN echo 'kargs = ["rd.neednet=1"]' >> /usr/lib/bootc/kargs.d/99-clevis-pin-tang
 RUN set -x; kver=$(cd /usr/lib/modules && echo *); dracut -vf /usr/lib/modules/$kver/initramfs.img $kver
 
 # Install and enable Tailscale
-
-RUN dnf config-manager --add-repo https://pkgs.tailscale.com/stable/centos/10/tailscale.repo \
+RUN curl -sS -o /etc/yum.repos.d/tailsclae.repo https://pkgs.tailscale.com/stable/fedora/tailscale.repo \
     && dnf install -y tailscale \
     && systemctl enable tailscaled.service
 
@@ -24,8 +20,7 @@ COPY sysctl.d /usr/lib/sysctl.d/
 
 # Clean up
 
-RUN dnf clean all \
-    && rm /var/log/dnf.log /var/log/dnf.rpm.log /var/log/dnf.librepo.log /var/log/hawkey.log
+RUN dnf clean all && rm /var/log/dnf5.log
 
 # Finish up by linting
 

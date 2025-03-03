@@ -29,10 +29,6 @@ jobs:
       id-token: write
 
     steps:
-      # Get fixed Buildah
-      - name: Apt update
-        run: sudo apt update
-
       # Checkout push-to-registry action GitHub repository
       - name: Checkout Push to Registry action
         uses: actions/checkout@v4
